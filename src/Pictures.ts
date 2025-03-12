@@ -10,11 +10,9 @@ export default class Pictures {
 
         if (await file.exists())
         {
-            console.log("File exists, returning it !")
             return file;
         }
 
-        console.log("File does not exist, returning error !")
         return new PictureNotFoundError();
     }
 }

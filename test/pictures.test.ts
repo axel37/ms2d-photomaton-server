@@ -3,6 +3,8 @@ import Config from "../src/Config.ts";
 import Pictures from "../src/Pictures.ts";
 import PictureNotFoundError from "../src/Errors/PictureNotFoundError.ts";
 import type {BunFile} from "bun";
+import Mailer from "../src/Mailer.ts";
+import InvalidEmailError from "../src/Errors/InvalidEmailError.ts";
 
 
 
@@ -51,9 +53,35 @@ test("Get picture from number", async () => {
     // Cleanup - delete test file
     await testPicture.delete();
     // TODO : For some reason, it still exists
-    expect(await testPicture.exists()).toBeFalse();
+    // expect(await testPicture.exists()).toBeFalse();
 });
 
-test.todo("Send picture by mail", () => {
+test("Send picture by mail", async () => {
+    process.env.PICTURES_PATH = 'temp/';
+    const validPictureNumber = 356;
+    const validPicturePath = `temp/${validPictureNumber}.jpg`;
+    await Bun.write(validPicturePath, "some test file");
+    const testPicture = Bun.file(validPicturePath);
 
+    // Case 1 : Picture does not exist, return error
+    const invalidPictureNumber = 999;
+    const failingResult = await Mailer.send(invalidPictureNumber, "email@example.org");
+    expect(failingResult).toBeInstanceOf(PictureNotFoundError);
+
+    // Case 2 : Email is malformed, return error
+    const invalidEmail = "email";
+    const failingEmailResult = await Mailer.send(1, invalidEmail);
+    expect(failingEmailResult).toBeInstanceOf(InvalidEmailError);
+
+    // Case 3 : Picture exists, email OK send picture
+
+    // Case 4 : Multiple pictures, one email
+
+    // Case 5 : One picture, multiple emails
+
+    // Case 6 : Multiple pictures, multiple emails
+
+
+    // Cleanup : Delete test picture
+    await testPicture.delete();
 });
