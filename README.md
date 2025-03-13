@@ -1,5 +1,12 @@
 # ms2d-photomaton-server
 
+## Requirements
+
+- `bun` must be installed (bun.sh)
+- `RESEND_API_KEY` env variable must contain valid resend.com API key
+
+## Installation
+
 To install dependencies:
 
 ```bash
@@ -10,6 +17,7 @@ To run tests :
 ```bash
 bun test
 ```
+## Running
 
 To start project :
 

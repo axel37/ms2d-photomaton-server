@@ -5,6 +5,7 @@ import PictureNotFoundError from "../src/Errors/PictureNotFoundError.ts";
 import type {BunFile} from "bun";
 import Mailer from "../src/Mailer.ts";
 import InvalidEmailError from "../src/Errors/InvalidEmailError.ts";
+import MailSendSuccess from "../src/Errors/MailSendSuccess.ts";
 
 
 
@@ -55,6 +56,7 @@ test("Get picture from number", async () => {
     // expect(await testPicture.exists()).toBeFalse();
 });
 
+// WARNING : This test needs a valid API key
 test("Send picture by mail", async () => {
     const picturePath = 'temp/';
     process.env.PICTURES_PATH = picturePath;
