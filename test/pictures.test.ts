@@ -78,6 +78,7 @@ test("Send picture by mail", async () => {
     const okResult = await Mailer.send(validPictureNumber, validEmail);
     // TODO : Should inspect each email that was sent
     expect(okResult).toBeInstanceOf(MailSendSuccess);
+    expect(okResult.accepted).toContain('mail@example.org')
 
     // Case 4 : Multiple pictures, one email
     const validPictureNumbers = [100, 101, 102];
@@ -87,11 +88,14 @@ test("Send picture by mail", async () => {
 
     const multipleResult = await Mailer.send(validPictureNumbers, validEmail);
     expect(multipleResult).toBeInstanceOf(MailSendSuccess);
+    // TODO : Test for attachments (here, we don't know if validPictureNumbers worked)
 
     // Case 5 : One picture, multiple emails
     const validEmails = ['mail1@example.org', 'mail2@example.org', 'mail3@example.org'];
     const multipleEmailResult = await Mailer.send(validPictureNumber, validEmails);
     expect(multipleEmailResult).toBeInstanceOf(MailSendSuccess);
+    expect(multipleEmailResult.accepted).toEqual(validEmails);
+
 
 
     // Case 6 : Multiple pictures, multiple emails

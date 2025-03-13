@@ -13,9 +13,9 @@ To install dependencies:
 bun install
 ```
 
-To run tests :
+To run tests : (timeout is needed since email tests are live through gmail)
 ```bash
-bun test
+bun test --timeout=20
 ```
 ## Running
 

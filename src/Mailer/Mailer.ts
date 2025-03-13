@@ -8,19 +8,35 @@ import MailSendFailureError from "../Errors/MailSendFailureError.ts";
 import MailSendSuccess from "../Errors/MailSendSuccess.ts";
 import GmailMailer from "./GmailMailer.ts";
 import SMTPTransport = require("nodemailer/lib/smtp-transport");
+import type {BunFile} from "bun";
 
 export default class Mailer {
-    static async send(pictureNumber: number, email: string): Promise<InvalidEmailError | PictureNotFoundError | MailSendFailureError | MailSendSuccess> {
-        if (!this.isEmailValid(email)) {
-            return new InvalidEmailError();
+    static async send(pictureNumber: number|Array<number>, email: string|Array<string>): Promise<InvalidEmailError | PictureNotFoundError | MailSendFailureError | MailSendSuccess> {
+        // Handle array of emails
+        if (typeof email === "string") {
+            email = [email];
+        }
+        for (const address of email) {
+            if (!this.isEmailValid(address)) {
+                return new InvalidEmailError();
+            }
         }
 
-        const picture = await Pictures.findPicture(pictureNumber);
-        if (picture instanceof PictureNotFoundError) {
-            return picture;
+        // Handle array of numbers
+        if (typeof pictureNumber === "number") {
+            pictureNumber = [pictureNumber];
         }
 
-        const result = await this.doSend(email);
+        const pictures = [];
+        for (const number of pictureNumber) {
+            const picture = await Pictures.findPicture(number);
+            if (picture instanceof PictureNotFoundError) {
+                return picture;
+            }
+            pictures.push(picture);
+        }
+
+        const result = await this.doSend(email, pictures);
 
         if (result.rejected.length > 0) {
             return new MailSendFailureError(result.rejected);
@@ -28,8 +44,8 @@ export default class Mailer {
         return new MailSendSuccess(result.accepted);
     }
 
-    private static async doSend(email: string): Promise<SMTPTransport.SentMessageInfo> {
-        return GmailMailer.send(email);
+    private static async doSend(email: Array<string>, pictures: Array<BunFile>): Promise<SMTPTransport.SentMessageInfo> {
+        return GmailMailer.send(email, pictures);
     }
 
     /**
