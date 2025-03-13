@@ -11,7 +11,7 @@ import SMTPTransport = require("nodemailer/lib/smtp-transport");
 import type {BunFile} from "bun";
 
 export default class Mailer {
-    static async send(pictureNumber: number|Array<number>, email: string|Array<string>): Promise<InvalidEmailError | PictureNotFoundError | MailSendFailureError | MailSendSuccess> {
+    static async send(pictureNumber: string|Array<string>, email: string|Array<string>): Promise<InvalidEmailError | PictureNotFoundError | MailSendFailureError | MailSendSuccess> {
         // Handle array of emails
         if (typeof email === "string") {
             email = [email];
@@ -23,7 +23,7 @@ export default class Mailer {
         }
 
         // Handle array of numbers
-        if (typeof pictureNumber === "number") {
+        if (typeof pictureNumber === "string") {
             pictureNumber = [pictureNumber];
         }
 

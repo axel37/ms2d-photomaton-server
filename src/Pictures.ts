@@ -3,7 +3,7 @@ import type {BunFile} from "bun";
 import Config from "./Config.ts";
 
 export default class Pictures {
-    static async findPicture(pictureNumber: number): Promise<PictureNotFoundError | BunFile> {
+    static async findPicture(pictureNumber: string): Promise<PictureNotFoundError | BunFile> {
         const path = Config.picturesPath;
 
         const file = Bun.file(`${path}/${pictureNumber}.jpg`);
@@ -13,7 +13,7 @@ export default class Pictures {
             return file;
         }
 
-        console.log(`Could not find picture #${pictureNumber} in path ${path}`);
+        console.log(`Could not find picture ${pictureNumber}.jpg in path ${path}`);
         return new PictureNotFoundError();
     }
 }
