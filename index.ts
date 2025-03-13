@@ -4,11 +4,12 @@ const server = Bun.serve({
     port: 3000,
     routes: {
         '/send-picture': async req => {
-            const { pictures, emails } = req.json();
-            return Api.sendPictureByMail({pictures: pictures, emails: emails});
+            const body = await req.json();
+            console.log(body);
+            return Api.sendPictureByMail(body);
         }
     },
 });
 
 console.log(`Listening on http://localhost:${server.port} ...`);
-console.log(Bun.version);
+console.log(`Runtime : Bun ${Bun.version}`);

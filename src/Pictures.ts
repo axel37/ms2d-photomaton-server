@@ -13,6 +13,7 @@ export default class Pictures {
             return file;
         }
 
+        console.log(`Could not find picture #${pictureNumber} in path ${path}`);
         return new PictureNotFoundError();
     }
 }

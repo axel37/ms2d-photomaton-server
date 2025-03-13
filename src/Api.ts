@@ -5,7 +5,10 @@ import PictureNotFoundError from "./Errors/PictureNotFoundError.ts";
 import MailSendFailureError from "./Errors/MailSendFailureError.ts";
 
 export default class Api {
-    static async sendPictureByMail({pictures, emails}): Promise<Response> {
+    static async sendPictureByMail(params: {pictures: number| number[], emails: string | string[]}): Promise<Response> {
+        const pictures = params.pictures;
+        const emails = params.emails;
+
         const result = await Mailer.send(pictures, emails);
 
         switch (true) {
