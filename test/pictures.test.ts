@@ -3,7 +3,7 @@ import Config from "../src/Config.ts";
 import Pictures from "../src/Pictures.ts";
 import PictureNotFoundError from "../src/Errors/PictureNotFoundError.ts";
 import type {BunFile} from "bun";
-import Mailer from "../src/Mailer.ts";
+import Mailer from "../src/Mailer/Mailer.ts";
 import InvalidEmailError from "../src/Errors/InvalidEmailError.ts";
 import MailSendSuccess from "../src/Errors/MailSendSuccess.ts";
 

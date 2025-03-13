@@ -34,3 +34,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Temp folder, used for creating pictures in tests
 temp/
+
+# Bun won't read .env.local (even though it's supposed to), so we'll use .env for sensitive stuff
+.env
