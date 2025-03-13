@@ -23,9 +23,10 @@ export default class Mailer {
         }
 
         // Handle array of numbers
-        if (typeof pictureNumber === "string") {
+        if (typeof pictureNumber === "string" || typeof pictureNumber === "number") {
             pictureNumber = [pictureNumber];
         }
+
 
         const pictures = [];
         for (const number of pictureNumber) {
