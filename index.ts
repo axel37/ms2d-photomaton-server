@@ -1,7 +1,12 @@
+import Api from "./src/Api.ts";
+
 const server = Bun.serve({
     port: 3000,
-    fetch(req) {
-        return new Response("Bun!");
+    routes: {
+        '/send-picture': async req => {
+            const { pictures, emails } = req.json();
+            return Api.sendPictureByMail({pictures: pictures, emails: emails});
+        }
     },
 });
 

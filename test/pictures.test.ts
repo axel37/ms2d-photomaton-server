@@ -6,7 +6,7 @@ import type {BunFile} from "bun";
 import Mailer from "../src/Mailer/Mailer.ts";
 import InvalidEmailError from "../src/Errors/InvalidEmailError.ts";
 import MailSendSuccess from "../src/Errors/MailSendSuccess.ts";
-
+import TestFileCreator from "./TestFileCreator.ts";
 
 
 /**
@@ -15,7 +15,7 @@ import MailSendSuccess from "../src/Errors/MailSendSuccess.ts";
  * TODO : Should test that the directory exists
  */
 test("Configure picture directory", async () => {
-    expect(process.env.PICTURES_PATH).toBeUndefined();
+    process.env.PICTURES_PATH = null;
 
     // Step 1 : No env var set, must return default value
     expect(Config.picturesPath).toEqual('pictures/');
@@ -41,7 +41,7 @@ test("Get picture from number", async () => {
     // Case 2 : picture exists, return picture
     const validPictureNumber = 356;
     const path = 'temp/';
-    const testPicture = await createTestPicture(validPictureNumber, path);
+    const testPicture = await TestFileCreator.createTestPicture(validPictureNumber, path);
     process.env.PICTURES_PATH = path;
     // (make sure that test file was created successfully before proceeding)
     expect(await testPicture.exists()).toBeTrue();
@@ -61,7 +61,7 @@ test("Send picture by mail", async () => {
     const picturePath = 'temp/';
     process.env.PICTURES_PATH = picturePath;
     const validPictureNumber = 356;
-    const testPicture = await createTestPicture(validPictureNumber, picturePath);
+    const testPicture = await TestFileCreator.createTestPicture(validPictureNumber, picturePath);
 
     // Case 1 : Picture does not exist, return error
     const invalidPictureNumber = 999;
@@ -82,9 +82,9 @@ test("Send picture by mail", async () => {
 
     // Case 4 : Multiple pictures, one email
     const validPictureNumbers = [100, 101, 102];
-    const picture1 = await createTestPicture(validPictureNumbers[0], picturePath);
-    const picture2 = await createTestPicture(validPictureNumbers[1], picturePath);
-    const picture3 = await createTestPicture(validPictureNumbers[2], picturePath);
+    const picture1 = await TestFileCreator.createTestPicture(validPictureNumbers[0], picturePath);
+    const picture2 = await TestFileCreator.createTestPicture(validPictureNumbers[1], picturePath);
+    const picture3 = await TestFileCreator.createTestPicture(validPictureNumbers[2], picturePath);
 
     const multipleResult = await Mailer.send(validPictureNumbers, validEmail);
     expect(multipleResult).toBeInstanceOf(MailSendSuccess);
@@ -109,13 +109,3 @@ test("Send picture by mail", async () => {
     await picture2.delete();
     await picture3.delete();
 });
-
-const createTestPicture = async (number: number, path: string): Promise<BunFile> => {
-    // Ensure path ends in /
-    if (!path.endsWith("/")) {
-        path += "/";
-    }
-    const validPicturePath = `${path}${number}.jpg`;
-    await Bun.write(validPicturePath, "some test file");
-    return Bun.file(validPicturePath);
-}

@@ -13,10 +13,13 @@ To install dependencies:
 bun install
 ```
 
-To run tests : (timeout is needed since email tests are live through gmail)
+To run tests :
 ```bash
 bun test --timeout=20
 ```
+
+*WARNING : Tests will send actual emails (hence the need for a longer timeout delay)*
+
 ## Running
 
 To start project :
