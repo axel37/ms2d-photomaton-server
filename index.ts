@@ -16,11 +16,9 @@ const server = Bun.serve({
 
         if (req.method === 'POST' && req.url.endsWith('/send-picture')) {
             try {
-                const formData = await req.formData();
-                const pictures = formData.getAll('pictures');
-                const emails = formData.getAll('emails');
-
-
+                const body = await req.json();
+                console.log(body);
+                return Api.sendPictureByMail(body);
 
                 const response = await Api.sendPictureByMail({ pictures, emails });
                 return new Response(response.statusText, {
