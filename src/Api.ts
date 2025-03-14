@@ -5,19 +5,16 @@ import PictureNotFoundError from "./Errors/PictureNotFoundError.ts";
 import MailSendFailureError from "./Errors/MailSendFailureError.ts";
 
 export default class Api {
- // Server-side code
-static async sendPictureByMail(params: {pictures: string | string[], emails: string | string[]}): Promise<Response> {
-    console.log("sendPictureByMail called with params:", params);
+    // Server-side code
+    static async sendPictureByMail(params: {pictures: string | string[], emails: string | string[]}): Promise<Response> {
+        const pictures = params.pictures;
+        const emails = params.emails;
 
-    const pictures = params.pictures;
-    const emails = params.emails;
+        console.log("Sending pictures:", pictures);
+        console.log("To emails:", emails);
 
-    console.log("Sending pictures:", pictures);
-    console.log("To emails:", emails);
-
-    try {
         const result = await Mailer.send(pictures, emails);
-        console.log("Mailer result:", result);
+        console.log("Mailer result :", result);
 
         switch (true) {
             case result instanceof InvalidEmailError:
@@ -31,9 +28,5 @@ static async sendPictureByMail(params: {pictures: string | string[], emails: str
             default:
                 return new Response("Unreachable code path reached", {status: 500});
         }
-    } catch (error) {
-        console.error("Error in sendPictureByMail:", error);
-        return new Response("Internal server error", {status: 500});
     }
-}
 }

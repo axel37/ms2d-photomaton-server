@@ -11,6 +11,7 @@ const server = Bun.serve({
     routes: {
         '/send-picture': async req => {
             const body = await req.json();
+            console.log("/send-picture received request with the following body :");
             console.log(body);
             let response = await Api.sendPictureByMail(body);
 
