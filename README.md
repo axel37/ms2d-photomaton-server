@@ -5,6 +5,7 @@
 - `bun` must be installed (bun.sh)
 - `GMAIL_USERNAME` env variable with a valid gmail address
 - `GMAIL_PASSWORD` env variable with app password of gmail account - https://myaccount.google.com/apppasswords
+- `PICTURES_PATH` env variable with the path to where the pictures are saved by the front-end application
 
 ## Installation
 
