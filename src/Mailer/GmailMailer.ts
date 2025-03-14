@@ -12,8 +12,8 @@ export default class GmailMailer {
             port: 587,
             secure: false,
             auth: {
-                user: process.env.GMAIL_USERNAME,
-                pass: process.env.GMAIL_PASSWORD,
+                user: "boulet.jeremy4@gmail.com",
+                pass: "",
             },
         });
 
