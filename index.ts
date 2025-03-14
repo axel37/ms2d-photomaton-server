@@ -3,17 +3,6 @@ import Api from "./src/Api.ts";
 const server = Bun.serve({
     port: 3000,
     fetch: async (req) => {
-        if (req.method === 'OPTIONS') {
-            return new Response(null, {
-                status: 204,
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-                    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                }
-            });
-        }
-
         if (req.method === 'POST' && req.url.endsWith('/send-picture')) {
             try {
                 const body = await req.json();
